@@ -10,6 +10,29 @@ function isMultiline(node) {
     return node.loc.start.line !== node.loc.end.line;
 }
 
+// True when `current` references a variable that `previous` declares — the two
+// statements own the same value (e.g. `const x = ...` directly followed by an
+// `if (x !== undefined) { ... }`), so forcing a blank line between them would
+// split a single logical unit.
+function dependsOnPrevious(sourceCode, previous, current) {
+    if (previous.type !== "VariableDeclaration") {
+        return false;
+    }
+
+    const [start, end] = current.range;
+
+    for (const variable of sourceCode.getDeclaredVariables(previous)) {
+        for (const reference of variable.references) {
+            const [refStart] = reference.identifier.range;
+            if (refStart >= start && refStart < end) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 export default {
     meta: {
         type: "layout",
@@ -37,6 +60,12 @@ export default {
 
                 // Only multi-line statements earn the surrounding blank line.
                 if (!isMultiline(previous) && !isMultiline(current)) {
+                    continue;
+                }
+
+                // A statement that consumes the value declared right above it
+                // belongs with that declaration — don't wedge a blank line in.
+                if (dependsOnPrevious(sourceCode, previous, current)) {
                     continue;
                 }
 
