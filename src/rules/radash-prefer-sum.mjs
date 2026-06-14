@@ -1,0 +1,71 @@
+// Prefer radash sum() over a reduce that adds values.
+
+// (a, b) => a + b  |  (a, b) => { return a + b }
+function isSumReducer(node) {
+    if (node.type !== "ArrowFunctionExpression" && node.type !== "FunctionExpression") {
+        return false;
+    }
+
+    if (node.params.length < 2 || node.params[0].type !== "Identifier" || node.params[1].type !== "Identifier") {
+        return false;
+    }
+
+    let expression = node.body;
+    if (expression.type === "BlockStatement") {
+        if (expression.body.length !== 1 || expression.body[0].type !== "ReturnStatement") {
+            return false;
+        }
+
+        expression = expression.body[0].argument;
+    }
+
+    if (!expression || expression.type !== "BinaryExpression" || expression.operator !== "+") {
+        return false;
+    }
+
+    const names = new Set([node.params[0].name, node.params[1].name]);
+
+    return (
+        expression.left.type === "Identifier" &&
+        expression.right.type === "Identifier" &&
+        names.has(expression.left.name) &&
+        names.has(expression.right.name)
+    );
+}
+
+export default {
+    meta: {
+        type: "suggestion",
+        docs: {
+            description: "prefer radash sum() over a reduce that adds values",
+        },
+        messages: {
+            preferSum: "Use radash 'sum()' instead of a reduce that adds values.",
+        },
+        schema: [],
+    },
+    create(context) {
+        return {
+            CallExpression(node) {
+                if (node.callee.type !== "MemberExpression" || node.callee.computed) {
+                    return;
+                }
+
+                if (node.callee.property.type !== "Identifier" || node.callee.property.name !== "reduce") {
+                    return;
+                }
+
+                const [reducer, initial] = node.arguments;
+                if (!reducer || !isSumReducer(reducer)) {
+                    return;
+                }
+
+                if (initial && !(initial.type === "Literal" && initial.value === 0)) {
+                    return;
+                }
+
+                context.report({ node: node.callee.property, messageId: "preferSum" });
+            },
+        };
+    },
+};
