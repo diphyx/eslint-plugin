@@ -180,5 +180,16 @@ export function createRecommended(plugin) {
                 "@diphyx/vueuse-prefer-route": "warn",
             },
         },
+
+        // Layout — all app code
+        {
+            files: ["**/*.ts", "**/*.vue"],
+            plugins: {
+                "@diphyx": plugin,
+            },
+            rules: {
+                "@diphyx/multiline-block-padding": "warn",
+            },
+        },
     ];
 }

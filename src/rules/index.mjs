@@ -28,6 +28,8 @@ import storeModeEnum from "./store-mode-enum.mjs";
 
 import composableNaming from "./composable-naming.mjs";
 
+import multilineBlockPadding from "./multiline-block-padding.mjs";
+
 import radashPreferIs from "./radash-prefer-is.mjs";
 import radashPreferCall from "./radash-prefer-call.mjs";
 import radashPreferClone from "./radash-prefer-clone.mjs";
@@ -78,6 +80,9 @@ export const rules = {
 
     // Composable
     "composable-naming": composableNaming,
+
+    // Layout
+    "multiline-block-padding": multilineBlockPadding,
 
     // Radash
     "radash-prefer-is": radashPreferIs,
