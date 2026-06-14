@@ -17,3 +17,7 @@ setInterval(() => tick(), 1000);
 ```ts
 useIntervalFn(() => tick(), 1000);
 ```
+
+## Scope
+
+Only reported inside a Vue effect scope. See [VueUse preferences](../../README.md#vueuse-preferences-ts-vue).

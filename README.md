@@ -6,7 +6,7 @@ A stock `eslint-plugin-vue` setup checks general Vue style; this plugin adds the
 
 ## Highlights
 
-- **32 custom rules** covering SFC templates, `<script setup>` structure, Harlemify stores, composable naming, and radash / VueUse usage.
+- **33 custom rules** covering SFC templates, `<script setup>` structure, Harlemify stores, composable naming, code layout, and radash / VueUse usage.
 - **One-line preset** — `configs.recommended` wires up the TypeScript + Vue parsers, the relevant `eslint-plugin-vue` rules, file-naming, and every custom rule.
 - **No extra peer deps** — the parsers and plugins ship inside this package; you only install `eslint` itself.
 - **Guidance, not gates** — every rule reports as a warning and none auto-fix, so it nudges without blocking commits.
@@ -116,6 +116,8 @@ Prefer [radash](https://radash-docs.vercel.app) helpers over hand-rolled equival
 
 Prefer [VueUse](https://vueuse.org) composables (with automatic lifecycle cleanup) over raw browser APIs.
 
+These rules only report inside a Vue effect scope — a `.vue` `<script setup>`, a component `setup()`, or a `use*` composable — because that is where VueUse's `onScopeDispose` cleanup actually runs. Plain TypeScript modules, utility functions, and non-component classes are left alone.
+
 | Rule                        | Enforces                                                                                             |
 | --------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `vueuse-prefer-storage`     | prefer `useLocalStorage` / `useSessionStorage` over raw Web Storage                                  |
@@ -124,6 +126,14 @@ Prefer [VueUse](https://vueuse.org) composables (with automatic lifecycle cleanu
 | `vueuse-prefer-observer`    | prefer VueUse observer composables over raw observers                                                |
 | `vueuse-prefer-clipboard`   | prefer `useClipboard()` over `navigator.clipboard`                                                   |
 | `vueuse-prefer-route`       | prefer `useRouteQuery` / `useRouteParams` / `useRouteHash` over `useRoute().query`/`.params`/`.hash` |
+
+### Layout (`*.ts`, `*.vue`)
+
+Keep multi-line statements visually separated in script/TypeScript code.
+
+| Rule                      | Enforces                                                   |
+| ------------------------- | ---------------------------------------------------------- |
+| `multiline-block-padding` | require a blank line between multi-line sibling statements |
 
 ## License
 

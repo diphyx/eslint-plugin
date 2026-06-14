@@ -19,3 +19,7 @@ const page = route.query.page;
 ```ts
 const page = useRouteQuery("page");
 ```
+
+## Scope
+
+Only reported inside a Vue effect scope. See [VueUse preferences](../../README.md#vueuse-preferences-ts-vue).

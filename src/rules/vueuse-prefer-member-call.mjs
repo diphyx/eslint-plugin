@@ -1,5 +1,7 @@
 // Prefer VueUse composables over raw DOM/window method calls.
 
+import { isInEffectScope } from "../utils/vue.mjs";
+
 // `<any>.<method>(...)`
 const MEMBER_CALLS = {
     addEventListener: "useEventListener",
@@ -20,6 +22,10 @@ export default {
     create(context) {
         return {
             CallExpression(node) {
+                if (!isInEffectScope(context, node)) {
+                    return;
+                }
+
                 const callee = node.callee;
                 if (callee.type !== "MemberExpression" || callee.computed || callee.property.type !== "Identifier") {
                     return;

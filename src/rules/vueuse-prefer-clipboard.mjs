@@ -1,5 +1,7 @@
 // Prefer VueUse useClipboard over navigator.clipboard.
 
+import { isInEffectScope } from "../utils/vue.mjs";
+
 export default {
     meta: {
         type: "suggestion",
@@ -14,6 +16,10 @@ export default {
     create(context) {
         return {
             MemberExpression(node) {
+                if (!isInEffectScope(context, node)) {
+                    return;
+                }
+
                 if (
                     !node.computed &&
                     node.object.type === "Identifier" &&

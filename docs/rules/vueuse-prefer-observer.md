@@ -17,3 +17,7 @@ const observer = new ResizeObserver(onResize);
 ```ts
 useResizeObserver(target, onResize);
 ```
+
+## Scope
+
+Only reported inside a Vue effect scope. See [VueUse preferences](../../README.md#vueuse-preferences-ts-vue).

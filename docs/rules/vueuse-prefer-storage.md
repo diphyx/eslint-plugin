@@ -17,3 +17,7 @@ const theme = localStorage.getItem("theme");
 ```ts
 const theme = useLocalStorage("theme", "light");
 ```
+
+## Scope
+
+Only reported inside a Vue effect scope. See [VueUse preferences](../../README.md#vueuse-preferences-ts-vue).
