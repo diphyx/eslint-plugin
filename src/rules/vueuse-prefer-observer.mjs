@@ -1,5 +1,7 @@
 // Prefer VueUse observer composables over raw observers.
 
+import { isInEffectScope } from "../utils/vue.mjs";
+
 // `new <Observer>(...)`
 const CONSTRUCTORS = {
     ResizeObserver: "useResizeObserver",
@@ -21,6 +23,10 @@ export default {
     create(context) {
         return {
             NewExpression(node) {
+                if (!isInEffectScope(context, node)) {
+                    return;
+                }
+
                 if (node.callee.type === "Identifier" && CONSTRUCTORS[node.callee.name]) {
                     context.report({
                         node: node.callee,

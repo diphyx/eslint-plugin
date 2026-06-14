@@ -116,6 +116,8 @@ Prefer [radash](https://radash-docs.vercel.app) helpers over hand-rolled equival
 
 Prefer [VueUse](https://vueuse.org) composables (with automatic lifecycle cleanup) over raw browser APIs.
 
+These rules only report inside a Vue effect scope — a `.vue` `<script setup>`, a component `setup()`, or a `use*` composable — because that is where VueUse's `onScopeDispose` cleanup actually runs. Plain TypeScript modules, utility functions, and non-component classes are left alone.
+
 | Rule                        | Enforces                                                                                             |
 | --------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `vueuse-prefer-storage`     | prefer `useLocalStorage` / `useSessionStorage` over raw Web Storage                                  |

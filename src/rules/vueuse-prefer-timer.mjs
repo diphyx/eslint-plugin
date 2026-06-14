@@ -1,5 +1,7 @@
 // Prefer VueUse timer composables over native timers.
 
+import { isInEffectScope } from "../utils/vue.mjs";
+
 // `<global>(...)`
 const GLOBAL_CALLS = {
     setInterval: "useIntervalFn",
@@ -19,6 +21,10 @@ export default {
     create(context) {
         return {
             CallExpression(node) {
+                if (!isInEffectScope(context, node)) {
+                    return;
+                }
+
                 if (node.callee.type === "Identifier" && GLOBAL_CALLS[node.callee.name]) {
                     context.report({
                         node: node.callee,

@@ -17,3 +17,7 @@ window.addEventListener("resize", onResize);
 ```ts
 useEventListener(window, "resize", onResize);
 ```
+
+## Scope
+
+Only reported inside a Vue effect scope. See [VueUse preferences](../../README.md#vueuse-preferences-ts-vue).

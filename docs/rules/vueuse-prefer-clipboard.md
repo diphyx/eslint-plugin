@@ -18,3 +18,7 @@ await navigator.clipboard.writeText(text);
 const { copy } = useClipboard();
 await copy(text);
 ```
+
+## Scope
+
+Only reported inside a Vue effect scope. See [VueUse preferences](../../README.md#vueuse-preferences-ts-vue).

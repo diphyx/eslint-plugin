@@ -2,6 +2,8 @@
 // over reading query / params / hash from a raw useRoute() result. Other route
 // properties (name, path, meta, ...) have no VueUse equivalent and are left alone.
 
+import { isInEffectScope } from "../utils/vue.mjs";
+
 // route property → VueUse composable
 const ROUTE_PROPERTIES = {
     query: "useRouteQuery",
@@ -36,6 +38,10 @@ export default {
             },
             MemberExpression(node) {
                 if (node.computed || node.property.type !== "Identifier") {
+                    return;
+                }
+
+                if (!isInEffectScope(context, node)) {
                     return;
                 }
 
