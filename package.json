@@ -1,0 +1,55 @@
+{
+    "name": "@diphyx/eslint-plugin",
+    "version": "0.1.0",
+    "description": "Shared ESLint plugin and flat config for DiPhyx Nuxt/Vue + Harlemify projects",
+    "license": "MIT",
+    "type": "module",
+    "exports": {
+        ".": "./src/index.mjs"
+    },
+    "files": [
+        "src"
+    ],
+    "scripts": {
+        "lint": "eslint .",
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "keywords": [
+        "eslint",
+        "eslintplugin",
+        "eslint-plugin",
+        "diphyx",
+        "nuxt",
+        "vue",
+        "harlemify"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/diphyx/eslint-plugin.git"
+    },
+    "homepage": "https://github.com/diphyx/eslint-plugin#readme",
+    "bugs": {
+        "url": "https://github.com/diphyx/eslint-plugin/issues"
+    },
+    "dependencies": {
+        "@typescript-eslint/eslint-plugin": "^8.61.0",
+        "@typescript-eslint/parser": "^8.61.0",
+        "eslint-plugin-check-file": "^3.3.1",
+        "eslint-plugin-vue": "^10.9.2",
+        "vue-eslint-parser": "^10.4.1"
+    },
+    "peerDependencies": {
+        "eslint": ">=9"
+    },
+    "devDependencies": {
+        "eslint": "^10.5.0",
+        "prettier": "^3.4.2"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
