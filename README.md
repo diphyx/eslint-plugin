@@ -2,7 +2,7 @@
 
 Opinionated ESLint rules and a ready-to-use flat config that capture DiPhyx's Nuxt/Vue + [Harlemify](https://github.com/diphyx/harlemify) conventions — so every DiPhyx app lints the same way from a single dependency.
 
-A stock `eslint-plugin-vue` setup checks general Vue style; this plugin adds the project-specific patterns it can't know about — where template directives belong, how `<script setup>` is ordered and written, the exact shape of a Harlemify `createStore`, composable naming, and reaching for radash / VueUse instead of hand-rolled code.
+A stock `eslint-plugin-vue` setup checks general Vue style; this plugin adds the project-specific patterns it can't know about — where template directives belong, how `<script setup>` is ordered and written, the exact shape of a Harlemify `createStore`, composable naming, and reaching for [radash](https://radash-docs.vercel.app) / [VueUse](https://vueuse.org) instead of hand-rolled code.
 
 ## Highlights
 
@@ -101,7 +101,7 @@ under [`docs/rules/`](./docs/rules) (also linked from the rule's `meta.docs.url`
 
 ### Radash preferences (`*.ts`, `*.vue`)
 
-Prefer radash helpers over hand-rolled equivalents.
+Prefer [radash](https://radash-docs.vercel.app) helpers over hand-rolled equivalents.
 
 | Rule                   | Enforces                                                                        |
 | ---------------------- | ------------------------------------------------------------------------------- |
@@ -114,7 +114,7 @@ Prefer radash helpers over hand-rolled equivalents.
 
 ### VueUse preferences (`*.ts`, `*.vue`)
 
-Prefer VueUse composables (with automatic lifecycle cleanup) over raw browser APIs.
+Prefer [VueUse](https://vueuse.org) composables (with automatic lifecycle cleanup) over raw browser APIs.
 
 | Rule                        | Enforces                                                                                             |
 | --------------------------- | ---------------------------------------------------------------------------------------------------- |
