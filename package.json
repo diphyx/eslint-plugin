@@ -12,6 +12,8 @@
     ],
     "scripts": {
         "lint": "eslint .",
+        "lint:warnings": "eslint -c eslint.warnings.mjs \"app/**/invalid/**/*.ts\" \"app/**/invalid/**/*.vue\"",
+        "test": "sh test.sh",
         "format": "prettier --write .",
         "format:check": "prettier --check ."
     },
