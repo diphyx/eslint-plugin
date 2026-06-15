@@ -42,6 +42,8 @@ import vueusePreferObserver from "./vueuse-prefer-observer.mjs";
 import vueusePreferClipboard from "./vueuse-prefer-clipboard.mjs";
 import vueusePreferRoute from "./vueuse-prefer-route.mjs";
 
+import navigateToObject from "./navigate-to-object.mjs";
+
 export const rules = {
     "template-v-if": templateVIf,
     "template-v-else": templateVElse,
@@ -88,6 +90,8 @@ export const rules = {
     "vueuse-prefer-observer": vueusePreferObserver,
     "vueuse-prefer-clipboard": vueusePreferClipboard,
     "vueuse-prefer-route": vueusePreferRoute,
+
+    "navigate-to-object": navigateToObject,
 };
 
 for (const [name, rule] of Object.entries(rules)) {

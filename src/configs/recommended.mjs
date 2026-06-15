@@ -167,6 +167,8 @@ export function createRecommended(plugin) {
                 "@diphyx/vueuse-prefer-observer": "warn",
                 "@diphyx/vueuse-prefer-clipboard": "warn",
                 "@diphyx/vueuse-prefer-route": "warn",
+
+                "@diphyx/navigate-to-object": "warn",
             },
         },
 

@@ -35,6 +35,8 @@ app/
 | `composables/invalid/radash.ts`            | invalid | `radash-*`                                              |
 | `composables/invalid/vueuse.ts`            | invalid | `vueuse-*` (wrapped in a `useXxx` effect scope)         |
 | `composables/invalid/multiline.ts`         | invalid | `multiline-block-padding`                               |
+| `composables/valid/navigate.ts`            | valid   | `navigate-to-object`                                    |
+| `composables/invalid/navigate.ts`          | invalid | `navigate-to-object`                                    |
 | `components/valid/Counter.vue`             | valid   | `template-*`, `script-*`                                |
 | `components/invalid/*.vue`                 | invalid | one `template-*` / `script-*` rule each                 |
 
