@@ -6,7 +6,7 @@ A stock `eslint-plugin-vue` setup checks general Vue style; this plugin adds the
 
 ## Highlights
 
-- **33 custom rules** covering SFC templates, `<script setup>` structure, Harlemify stores, composable naming, code layout, and radash / VueUse usage.
+- **35 custom rules** covering SFC templates, `<script setup>` structure, Harlemify stores, composable naming, code layout, and radash / VueUse usage.
 - **One-line preset** — `configs.recommended` wires up the TypeScript + Vue parsers, the relevant `eslint-plugin-vue` rules, file-naming, and every custom rule.
 - **No extra peer deps** — the parsers and plugins ship inside this package; you only install `eslint` itself.
 - **Guidance, not gates** — every rule reports as a warning and none auto-fix, so it nudges without blocking commits.
@@ -63,12 +63,13 @@ under [`docs/rules/`](./docs/rules) (also linked from the rule's `meta.docs.url`
 
 ### Template (`*.vue`)
 
-| Rule              | Enforces                                                 |
-| ----------------- | -------------------------------------------------------- |
-| `template-v-if`   | `v-if` must be on a `<template>` wrapper                 |
-| `template-v-else` | `v-else` / `v-else-if` must be on a `<template>` wrapper |
-| `template-v-for`  | `v-for` must be on a `<template>` wrapper                |
-| `template-text`   | bare text must be wrapped in an HTML tag                 |
+| Rule                    | Enforces                                                              |
+| ----------------------- | --------------------------------------------------------------------- |
+| `template-v-if`         | `v-if` must be on a `<template>` wrapper                              |
+| `template-v-else`       | `v-else` / `v-else-if` must be on a `<template>` wrapper              |
+| `template-v-for`        | `v-for` must be on a `<template>` wrapper                             |
+| `template-text`         | bare text must be wrapped in an HTML tag                              |
+| `template-props-prefix` | props must be read via `props.` in the template, not the bare binding |
 
 ### Script (`*.vue`)
 
@@ -76,6 +77,7 @@ under [`docs/rules/`](./docs/rules) (also linked from the rule's `meta.docs.url`
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | `script-section-order` | script-setup section order: import → props → model → emit → composable → state → computed → watch → method → lifecycle → expose |
 | `script-define-object` | `define*` macros must declare their shape with a runtime object, not the type-only form                                         |
+| `script-define-const`  | `define*` macros must be assigned to a const with the conventional name (`props` / `model` / `emit` / `slots`)                  |
 
 ### Store — Harlemify `createStore`
 
