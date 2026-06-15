@@ -4,16 +4,7 @@
 
 ## Rule Details
 
-This rule flags a `defineProps` / `defineModel` / `defineEmits` / `defineExpose`
-call that has no runtime object argument — i.e. the type-only generic form. The
-convention is to describe the shape with a JS object. A type annotation alongside
-the object (`defineModel<Partial<Collection>>({ ... })`) is fine because the
-object shape is still present.
-
-Because `withDefaults()` only wraps the type-only `defineProps<{ ... }>()`,
-sticking to the object form removes the need for `withDefaults` entirely — its
-inner `defineProps` is reported by this rule. Declare defaults inline instead:
-`defineProps({ size: { type: Number, default: 10 } })`.
+Flags a `defineProps` / `defineModel` / `defineEmits` / `defineExpose` call with no runtime object argument (the type-only generic form); describe the shape with a JS object instead. A type annotation alongside the object (`defineModel<Partial<Collection>>({ ... })`) is fine. Sticking to the object form also removes the need for `withDefaults()`.
 
 ### ❌ Incorrect
 
