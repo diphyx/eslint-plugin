@@ -1,6 +1,3 @@
-// Prefer radash sum() over a reduce that adds values.
-
-// (a, b) => a + b  |  (a, b) => { return a + b }
 function isSumReducer(node) {
     if (node.type !== "ArrowFunctionExpression" && node.type !== "FunctionExpression") {
         return false;

@@ -1,5 +1,3 @@
-// createStore model/view/action/compose sections must be factory functions.
-
 import { FUNCTION_SECTIONS, getCreateStoreConfig, getKeyedProperties, isCreateStoreCall } from "../utils/store.mjs";
 
 export default {

@@ -1,8 +1,5 @@
-// Prefer VueUse observer composables over raw observers.
-
 import { isInEffectScope } from "../utils/vue.mjs";
 
-// `new <Observer>(...)`
 const CONSTRUCTORS = {
     ResizeObserver: "useResizeObserver",
     IntersectionObserver: "useIntersectionObserver",

@@ -1,10 +1,5 @@
-// Prefer VueUse route composables (useRouteQuery / useRouteParams / useRouteHash)
-// over reading query / params / hash from a raw useRoute() result. Other route
-// properties (name, path, meta, ...) have no VueUse equivalent and are left alone.
-
 import { isInEffectScope } from "../utils/vue.mjs";
 
-// route property → VueUse composable
 const ROUTE_PROPERTIES = {
     query: "useRouteQuery",
     params: "useRouteParams",
@@ -27,7 +22,6 @@ export default {
         schema: [],
     },
     create(context) {
-        // Names bound to a useRoute() result, e.g. `const route = useRoute()`.
         const routeBindings = new Set();
 
         return {
@@ -50,7 +44,6 @@ export default {
                     return;
                 }
 
-                // useRoute().query  |  const route = useRoute(); route.query
                 const object = node.object;
                 const fromRoute =
                     isUseRouteCall(object) || (object.type === "Identifier" && routeBindings.has(object.name));

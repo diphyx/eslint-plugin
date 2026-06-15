@@ -1,6 +1,3 @@
-// shape() result must be named with a 'Shape' suffix, e.g.
-//   export const collectionShape = shape(collectionSchema)
-
 export default {
     meta: {
         type: "problem",

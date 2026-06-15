@@ -1,7 +1,3 @@
-// Generic AST helpers shared across rules.
-
-// `<Object>.<prop>` for a non-computed static member expression → "Object.prop",
-// otherwise null.
 export function staticMemberName(node) {
     if (!node || node.type !== "MemberExpression" || node.computed) {
         return null;
@@ -14,7 +10,6 @@ export function staticMemberName(node) {
     return `${node.object.name}.${node.property.name}`;
 }
 
-// Callee name for `foo(...)` where the callee is a bare identifier, otherwise null.
 export function getCallName(node) {
     if (node && node.type === "CallExpression" && node.callee.type === "Identifier") {
         return node.callee.name;

@@ -1,5 +1,3 @@
-// A store assigned from createStore must use a `Store` suffix.
-
 import { isCreateStoreCall } from "../utils/store.mjs";
 
 export default {
@@ -20,7 +18,6 @@ export default {
                     return;
                 }
 
-                // const accountStore = createStore({ ... })
                 const parent = node.parent;
                 if (parent && parent.type === "VariableDeclarator" && parent.id.type === "Identifier") {
                     if (!/Store$/.test(parent.id.name)) {

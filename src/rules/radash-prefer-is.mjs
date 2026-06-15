@@ -1,5 +1,3 @@
-// Prefer radash is* helpers over `typeof` comparisons.
-
 const TYPEOF_HELPERS = {
     number: "isNumber",
     string: "isString",
@@ -8,7 +6,6 @@ const TYPEOF_HELPERS = {
     symbol: "isSymbol",
 };
 
-// typeof x === "<type>" → the compared type string, or null.
 function getTypeofComparison(node) {
     if (node.operator !== "===" && node.operator !== "!==") {
         return null;

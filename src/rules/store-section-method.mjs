@@ -1,7 +1,3 @@
-// createStore sections must use method shorthand — model({ many }) { ... } —
-// not arrow functions or plain function expressions. Whether a section is a
-// function at all is left to store-section-function.
-
 import { FUNCTION_SECTIONS, getCreateStoreConfig, getKeyedProperties, isCreateStoreCall } from "../utils/store.mjs";
 
 export default {
@@ -33,8 +29,6 @@ export default {
                         continue;
                     }
 
-                    // property.method is only true for method shorthand. Arrow functions
-                    // and `model: function () {}` are functions but not shorthand.
                     const value = property.value;
                     const isFunction = value.type === "ArrowFunctionExpression" || value.type === "FunctionExpression";
                     if (isFunction && !property.method) {

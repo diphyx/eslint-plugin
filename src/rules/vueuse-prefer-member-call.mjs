@@ -1,8 +1,5 @@
-// Prefer VueUse composables over raw DOM/window method calls.
-
 import { isInEffectScope } from "../utils/vue.mjs";
 
-// `<any>.<method>(...)`
 const MEMBER_CALLS = {
     addEventListener: "useEventListener",
     matchMedia: "useMediaQuery",

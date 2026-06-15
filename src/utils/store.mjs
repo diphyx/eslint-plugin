@@ -1,9 +1,3 @@
-// Helpers for the Harlemify createStore rules.
-//
-// Grounded in harlemify's StoreConfig (src/runtime/core/types/store.ts):
-//   { name: string; model: fn; view: fn; action: fn; compose?: fn; lazy?: boolean }
-// name/model/view/action are required; model/view/action/compose are factory functions.
-
 export const SECTION_ORDER = ["name", "model", "view", "action", "compose", "lazy"];
 
 export const ALLOWED_KEYS = new Set(SECTION_ORDER);
@@ -28,7 +22,6 @@ export function findProperty(objectExpression, key) {
     return getKeyedProperties(objectExpression).find((property) => property.key.name === key) || null;
 }
 
-// Factory for "config must include <key>" rules.
 export function requireKey(key, message) {
     return {
         meta: {

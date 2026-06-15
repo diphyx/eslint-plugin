@@ -1,14 +1,9 @@
-// Helpers for rules that operate on Vue SFCs (*.vue).
-
 export function isVueFile(context) {
     return context.filename.endsWith(".vue");
 }
 
-// Functions that establish a Vue effect scope: a use* composable or a setup().
 const EFFECT_SCOPE_PATTERN = /^use[A-Z]/;
 
-// Name a function node is bound to — handles declarations, variable-assigned
-// arrows/expressions, and object/class methods.
 function functionName(fn) {
     if (fn.id && fn.id.name) {
         return fn.id.name;
@@ -19,12 +14,10 @@ function functionName(fn) {
         return null;
     }
 
-    // const useX = () => {} | const useX = function () {}
     if (parent.type === "VariableDeclarator" && parent.id.type === "Identifier") {
         return parent.id.name;
     }
 
-    // { setup() {} } | { setup: () => {} } | class { setup() {} }
     if (
         (parent.type === "Property" || parent.type === "MethodDefinition") &&
         !parent.computed &&
@@ -37,10 +30,6 @@ function functionName(fn) {
     return null;
 }
 
-// True when `node` sits where a Vue effect scope is active — a .vue
-// <script setup>, a component setup(), or a use* composable. Outside such a
-// scope VueUse's onScopeDispose-based auto-cleanup never runs, so the
-// vueuse-prefer-* suggestions don't apply (plain utility modules/classes).
 export function isInEffectScope(context, node) {
     if (isVueFile(context)) {
         return true;
@@ -62,7 +51,6 @@ export function isInEffectScope(context, node) {
     return false;
 }
 
-// Wraps a template-body visitor with the shared .vue + parserServices guards.
 export function defineTemplateRule(meta, createVisitor) {
     return {
         meta,
@@ -81,7 +69,6 @@ export function defineTemplateRule(meta, createVisitor) {
     };
 }
 
-// Factory for "directive must live on a <template> wrapper" rules.
 export function createDirectiveWrapperRule({ directives, label }) {
     const targets = new Set(directives);
 

@@ -1,6 +1,3 @@
-// @diphyx/eslint-plugin — shared ESLint plugin + flat config for DiPhyx
-// Nuxt/Vue + Harlemify projects.
-
 import { createRequire } from "node:module";
 
 import { rules } from "./rules/index.mjs";

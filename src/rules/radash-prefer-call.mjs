@@ -1,8 +1,5 @@
-// Prefer radash helpers over native global calls.
-
 import { staticMemberName } from "../utils/ast.mjs";
 
-// `<Global>.<method>(...)` → radash helper
 const GLOBAL_CALLS = {
     "Promise.all": "all",
     "Array.isArray": "isArray",

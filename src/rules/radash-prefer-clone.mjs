@@ -1,5 +1,3 @@
-// Prefer radash clone() over JSON.parse(JSON.stringify()).
-
 import { staticMemberName } from "../utils/ast.mjs";
 
 function isJsonStringifyCall(node) {
