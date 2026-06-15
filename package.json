@@ -1,6 +1,6 @@
 {
     "name": "@diphyx/eslint-plugin",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "description": "Shared ESLint plugin and flat config for DiPhyx Nuxt/Vue + Harlemify projects",
     "license": "MIT",
     "type": "module",
@@ -12,6 +12,8 @@
     ],
     "scripts": {
         "lint": "eslint .",
+        "lint:warnings": "eslint -c eslint.warnings.mjs \"app/**/invalid/**/*.ts\" \"app/**/invalid/**/*.vue\"",
+        "test": "sh test.sh",
         "format": "prettier --write .",
         "format:check": "prettier --check ."
     },

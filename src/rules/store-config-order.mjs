@@ -1,5 +1,3 @@
-// createStore config keys must follow name → model → view → action → compose → lazy.
-
 import { SECTION_ORDER, getCreateStoreConfig, getKeyedProperties, isCreateStoreCall } from "../utils/store.mjs";
 
 export default {
@@ -31,7 +29,6 @@ export default {
                 for (const property of getKeyedProperties(config)) {
                     const index = SECTION_ORDER.indexOf(property.key.name);
                     if (index === -1) {
-                        // Unknown keys are handled by store-no-unknown-key.
                         continue;
                     }
 

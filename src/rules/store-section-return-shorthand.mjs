@@ -1,12 +1,5 @@
-// createStore sections must return a shorthand object of named consts —
-// `const list = many(shape); return { list };` — rather than returning inline
-// expressions like `return { list: many(shape) }`.
-
 import { FUNCTION_SECTIONS, getCreateStoreConfig, getKeyedProperties, isCreateStoreCall } from "../utils/store.mjs";
 
-// The object(s) a section function returns: an arrow concise body, or the
-// top-level `return { ... }` statements of a block body (returns nested inside
-// inner functions/branches are left alone).
 function getReturnedObjects(fn) {
     const body = fn.body;
 

@@ -1,8 +1,3 @@
-// Compiler macros must declare their shape with a runtime object argument, e.g.
-// defineProps({ ... }), rather than the type-only generic form defineProps<{ ... }>().
-// A type-only call has no runtime object, so it is reported; defineModel<T>({ ... })
-// (a type annotation plus the object) is fine because the object shape is present.
-
 import { isVueFile } from "../utils/vue.mjs";
 
 const MACROS = new Set(["defineProps", "defineModel", "defineEmits", "defineExpose"]);

@@ -1,6 +1,3 @@
-// A commit-options object pairs `model` + `mode`; `mode` must use a ModelMode
-// enum (ModelManyMode.SET, ...) rather than a raw string literal.
-
 export default {
     meta: {
         type: "suggestion",

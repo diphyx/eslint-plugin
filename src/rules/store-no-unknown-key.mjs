@@ -1,5 +1,3 @@
-// createStore config must not contain unknown keys.
-
 import { ALLOWED_KEYS, getCreateStoreConfig, getKeyedProperties, isCreateStoreCall } from "../utils/store.mjs";
 
 export default {

@@ -1,10 +1,3 @@
-// Enforce script-setup section order:
-// import → props → model → emit → composable → state → computed → watch → method
-// → lifecycle → expose.
-//
-// The compiler macros have a fixed order of their own: defineProps, then
-// defineModel, then defineEmits at the top, with defineExpose always last.
-
 import { getCallName } from "../utils/ast.mjs";
 import { isVueFile } from "../utils/vue.mjs";
 
@@ -28,7 +21,6 @@ const LIFECYCLE_CALLS = new Set(["onMounted", "onUnmounted", "onBeforeMount", "o
 
 const STATE_CALLS = new Set(["ref", "reactive", "shallowRef", "shallowReactive"]);
 
-// Compiler macros → their section. defineExpose is last; the rest sit at the top.
 const MACRO_SECTIONS = {
     defineProps: "props",
     defineModel: "model",
@@ -65,7 +57,6 @@ function classify(node) {
                 continue;
             }
 
-            // const handler = () => {} | function () {}
             if (declarator.init.type === "ArrowFunctionExpression" || declarator.init.type === "FunctionExpression") {
                 return "method";
             }
@@ -83,8 +74,6 @@ function classify(node) {
                 return "composable";
             }
 
-            // Empty refs (e.g. `const el = ref()`) are template refs — they must sit next
-            // to the composable that consumes them, so they are exempt from state ordering.
             if (STATE_CALLS.has(callName) && declarator.init.arguments.length > 0) {
                 return "state";
             }

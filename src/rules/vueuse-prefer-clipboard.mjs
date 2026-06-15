@@ -1,5 +1,3 @@
-// Prefer VueUse useClipboard over navigator.clipboard.
-
 import { isInEffectScope } from "../utils/vue.mjs";
 
 export default {

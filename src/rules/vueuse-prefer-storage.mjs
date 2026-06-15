@@ -1,8 +1,5 @@
-// Prefer VueUse useLocalStorage/useSessionStorage over raw Web Storage.
-
 import { isInEffectScope } from "../utils/vue.mjs";
 
-// Bare/qualified identifier access, e.g. localStorage / window.localStorage
 const MEMBER_ACCESS = {
     localStorage: "useLocalStorage",
     sessionStorage: "useSessionStorage",
@@ -26,7 +23,6 @@ export default {
                     return;
                 }
 
-                // localStorage.getItem(...)
                 if (node.object.type === "Identifier" && MEMBER_ACCESS[node.object.name]) {
                     context.report({
                         node: node.object,
@@ -36,7 +32,6 @@ export default {
                     return;
                 }
 
-                // window.localStorage / globalThis.sessionStorage
                 if (!node.computed && node.property.type === "Identifier" && MEMBER_ACCESS[node.property.name]) {
                     context.report({
                         node: node.property,

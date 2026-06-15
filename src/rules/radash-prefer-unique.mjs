@@ -1,5 +1,3 @@
-// Prefer radash unique() over spreading a new Set.
-
 export default {
     meta: {
         type: "suggestion",

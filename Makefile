@@ -6,6 +6,10 @@ lint:
 format:
 	pnpm run format
 
+.PHONY: test
+test:
+	sh test.sh
+
 .PHONY: publish
 publish:
 	sh publish.sh

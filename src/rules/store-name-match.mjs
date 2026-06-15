@@ -1,5 +1,3 @@
-// createStore `name` should match the store variable (accountStore → "account").
-
 import { findProperty, getCreateStoreConfig, isCreateStoreCall } from "../utils/store.mjs";
 
 export default {

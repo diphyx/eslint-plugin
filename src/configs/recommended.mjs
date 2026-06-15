@@ -1,8 +1,3 @@
-// The `recommended` flat-config preset: wires the TypeScript and Vue parsers,
-// the relevant eslint-plugin-vue rules, file-naming, and every custom rule.
-// `createRecommended(plugin)` takes the plugin so the preset can register it
-// under the "@diphyx" namespace.
-
 import tsParser from "@typescript-eslint/parser";
 import vueParser from "vue-eslint-parser";
 
@@ -32,7 +27,6 @@ const namingConvention = [
 
 export function createRecommended(plugin) {
     return [
-        // TypeScript files
         {
             files: ["**/*.ts"],
             languageOptions: {
@@ -53,7 +47,6 @@ export function createRecommended(plugin) {
             },
         },
 
-        // Vue files
         {
             files: ["**/*.vue"],
             languageOptions: {
@@ -76,7 +69,6 @@ export function createRecommended(plugin) {
                 "@typescript-eslint/naming-convention": namingConvention,
                 "arrow-body-style": ["warn", "always"],
 
-                // Vue rules
                 "vue/block-lang": ["warn", { script: { lang: "ts" } }],
                 "vue/component-api-style": ["warn", ["script-setup"]],
                 "vue/define-macros-order": "off",
@@ -93,8 +85,8 @@ export function createRecommended(plugin) {
                             "SLOT",
                             "TWO_WAY_BINDING",
                             "OTHER_DIRECTIVES",
-                            "ATTR_DYNAMIC",
                             "ATTR_STATIC",
+                            "ATTR_DYNAMIC",
                             "EVENTS",
                             "CONTENT",
                             "ATTR_SHORTHAND_BOOL",
@@ -103,17 +95,17 @@ export function createRecommended(plugin) {
                     },
                 ],
 
-                // Template + script rules
                 "@diphyx/template-v-if": "warn",
                 "@diphyx/template-v-else": "warn",
                 "@diphyx/template-v-for": "warn",
                 "@diphyx/template-text": "warn",
+                "@diphyx/template-props-prefix": "warn",
                 "@diphyx/script-section-order": "warn",
                 "@diphyx/script-define-object": "warn",
+                "@diphyx/script-define-const": "warn",
             },
         },
 
-        // Component file naming
         {
             files: ["app/components/**/*.vue"],
             ignores: ["**/index.vue"],
@@ -125,7 +117,6 @@ export function createRecommended(plugin) {
             },
         },
 
-        // Store pattern
         {
             files: ["app/stores/*.ts", "app/composables/*.ts"],
             plugins: {
@@ -148,7 +139,6 @@ export function createRecommended(plugin) {
             },
         },
 
-        // Composable naming
         {
             files: ["app/composables/*.ts"],
             plugins: {
@@ -159,7 +149,6 @@ export function createRecommended(plugin) {
             },
         },
 
-        // Utility preferences (radash / vueuse) — all app code
         {
             files: ["**/*.ts", "**/*.vue"],
             plugins: {
@@ -178,10 +167,11 @@ export function createRecommended(plugin) {
                 "@diphyx/vueuse-prefer-observer": "warn",
                 "@diphyx/vueuse-prefer-clipboard": "warn",
                 "@diphyx/vueuse-prefer-route": "warn",
+
+                "@diphyx/navigate-to-object": "warn",
             },
         },
 
-        // Layout — all app code
         {
             files: ["**/*.ts", "**/*.vue"],
             plugins: {

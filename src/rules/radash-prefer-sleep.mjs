@@ -1,5 +1,3 @@
-// Prefer radash sleep() over wrapping setTimeout in a Promise.
-
 function isSetTimeoutCall(node) {
     return (
         Boolean(node) &&

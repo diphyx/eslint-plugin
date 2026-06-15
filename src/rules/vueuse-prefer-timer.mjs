@@ -1,8 +1,5 @@
-// Prefer VueUse timer composables over native timers.
-
 import { isInEffectScope } from "../utils/vue.mjs";
 
-// `<global>(...)`
 const GLOBAL_CALLS = {
     setInterval: "useIntervalFn",
 };

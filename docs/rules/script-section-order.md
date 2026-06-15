@@ -4,14 +4,11 @@
 
 ## Rule Details
 
-This rule enforces a fixed ordering of `<script setup>` statements:
+Enforces a fixed order of `<script setup>` statements:
 
 `import` → `props` → `model` → `emit` → `composable` → `state` → `computed` → `watch` → `method` → `lifecycle` → `expose`
 
-The compiler macros have their own fixed order within the top of the block —
-`defineProps`, then `defineModel`, then `defineEmits` — while `defineExpose`
-always comes last. The rule classifies each top-level statement and reports one
-that appears before a section that should come earlier.
+Macros keep their own order at the top (`defineProps`, `defineModel`, `defineEmits`), with `defineExpose` last.
 
 ### ❌ Incorrect
 

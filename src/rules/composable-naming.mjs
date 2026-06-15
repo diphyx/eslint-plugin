@@ -1,8 +1,3 @@
-// Exported composable functions must follow the useXxx naming pattern.
-//
-// The main composable is the module-level export; its returned methods
-// (load/set/get/reset/start/stop) live inside it and are not linted here.
-
 const ALLOWED_PATTERN = /^use[A-Z]/;
 
 export default {
@@ -41,14 +36,12 @@ export default {
                     return;
                 }
 
-                // export function useXxx() {}
                 if (declaration.type === "FunctionDeclaration") {
                     check(declaration.id);
 
                     return;
                 }
 
-                // export const useXxx = () => {} | function () {}
                 if (declaration.type === "VariableDeclaration") {
                     for (const declarator of declaration.declarations) {
                         const init = declarator.init;
