@@ -4,25 +4,9 @@
 
 ## Rule Details
 
-This rule keeps multi-line statements visually separated. Whenever two adjacent
-sibling statements sit in the same block and **either** of them spans more than
-one line, the rule requires at least one blank line between them. Runs of
-single-line statements may stay tight.
+Requires a blank line between two adjacent sibling statements when **either** spans more than one line; runs of single-line statements may stay tight. Applies to `.ts` files and `.vue` `<script setup>`, in every statement block.
 
-It applies to script/TypeScript code — every `.ts` file and the `<script setup>`
-of a `.vue` file — across all statement blocks (module top level as well as
-function, `if`/`for`/`try`, and class static bodies).
-
-A comment sitting between two statements already acts as a separator, so the
-rule leaves those pairs alone.
-
-A statement that consumes a variable declared on the line right above it is also
-left alone — the declaration and its first use own the same value and read as a
-single logical unit, so the rule does not wedge a blank line between them.
-
-This is intentionally not covered by the built-in
-[`padding-line-between-statements`](https://eslint.org/docs/latest/rules/padding-line-between-statements),
-which keys off statement _type_ rather than whether a statement is multi-line.
+Two exceptions: a comment between the statements already separates them, and a statement that consumes a variable from a **single-line** declaration right above it stays attached (a multi-line declaration still earns its blank line).
 
 ### ❌ Incorrect
 
@@ -33,6 +17,17 @@ const increment = () => {
     count.value++;
 };
 const other = "other";
+```
+
+```ts
+// The declaration is multi-line, so it still needs a blank line before the guard.
+const callError = await call({
+    method: "POST",
+    body: { force: payload.force },
+});
+if (callError) {
+    throw callError;
+}
 ```
 
 ### ✅ Correct
