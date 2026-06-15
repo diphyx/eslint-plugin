@@ -1,5 +1,3 @@
-// Bare template text should be wrapped in an HTML tag.
-
 import { defineTemplateRule } from "../utils/vue.mjs";
 
 const TEXT_ELEMENTS = new Set([
@@ -42,6 +40,15 @@ const TEXT_ELEMENTS = new Set([
 
 const TEXT_PATTERN = /^[A-Za-z][A-Za-z .,]*$/;
 
+function onOwnRow(text, index) {
+    let i = index - 1;
+    while (i >= 0 && (text[i] === " " || text[i] === "\t")) {
+        i--;
+    }
+
+    return i >= 0 && (text[i] === "\n" || text[i] === "\r");
+}
+
 export default defineTemplateRule(
     {
         type: "suggestion",
@@ -53,28 +60,54 @@ export default defineTemplateRule(
         },
         schema: [],
     },
-    (context) => ({
-        VText(node) {
-            const value = node.value.trim();
-            if (value.length <= 1) {
-                return;
-            }
+    (context) => {
+        const text = context.sourceCode.getText();
 
-            if (!TEXT_PATTERN.test(value)) {
-                return;
-            }
+        return {
+            VText(node) {
+                const value = node.value.trim();
+                if (value.length <= 1) {
+                    return;
+                }
 
-            const isWrapped = node.parent.type === "VElement" && TEXT_ELEMENTS.has(node.parent.name);
-            if (isWrapped) {
-                return;
-            }
+                if (!TEXT_PATTERN.test(value)) {
+                    return;
+                }
 
-            const label = value.length > 40 ? value.substring(0, 40) + "..." : value;
-            context.report({
-                node,
-                messageId: "wrapText",
-                data: { text: label },
-            });
-        },
-    }),
+                const isWrapped = node.parent.type === "VElement" && TEXT_ELEMENTS.has(node.parent.name);
+                if (isWrapped) {
+                    return;
+                }
+
+                const leading = node.value.length - node.value.trimStart().length;
+                if (!onOwnRow(text, node.range[0] + leading)) {
+                    return;
+                }
+
+                const label = value.length > 40 ? value.substring(0, 40) + "..." : value;
+                context.report({
+                    node,
+                    messageId: "wrapText",
+                    data: { text: label },
+                });
+            },
+            VExpressionContainer(node) {
+                if (node.parent.type !== "VElement" || TEXT_ELEMENTS.has(node.parent.name)) {
+                    return;
+                }
+
+                if (!onOwnRow(text, node.range[0])) {
+                    return;
+                }
+
+                const raw = context.sourceCode.getText(node).trim();
+                const label = raw.length > 40 ? raw.substring(0, 40) + "..." : raw;
+                context.report({
+                    node,
+                    messageId: "wrapText",
+                    data: { text: label },
+                });
+            },
+        };
+    },
 );

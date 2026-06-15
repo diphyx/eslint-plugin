@@ -4,13 +4,20 @@
 
 ## Rule Details
 
-This rule flags bare text content (more than one character, matching a plain word/sentence pattern) that sits directly inside an element which is not a recognized text element such as `<span>`, `<p>`, or `<h1>`. Wrapping text in a semantic inline tag keeps markup consistent and stylable.
+Flags text content placed **on its own row** inside a non-text element (anything but `<span>`, `<p>`, `<h1>`, …); wrap it in a semantic inline tag. Inline content next to the tags (`<div>Hello world</div>`, `<UiBadge>{{ props.status }}</UiBadge>`) is left alone. Covers both static text and `{{ ... }}` interpolations; attribute bindings (`:title="x"`) and directives (`v-if="cond"`) are not text content.
 
 ### ❌ Incorrect
 
+<!-- prettier-ignore -->
 ```vue
 <template>
-    <div>Hello world</div>
+    <div>
+        Hello world
+    </div>
+
+    <UiBadge :color="color">
+        {{ props.status }}
+    </UiBadge>
 </template>
 ```
 
@@ -18,6 +25,15 @@ This rule flags bare text content (more than one character, matching a plain wor
 
 ```vue
 <template>
-    <div><span>Hello world</span></div>
+    <div>Hello world</div>
+    <UiBadge :color="color">{{ props.status }}</UiBadge>
+
+    <div>
+        <span>Hello world</span>
+    </div>
+
+    <UiBadge :color="color">
+        <span>{{ props.status }}</span>
+    </UiBadge>
 </template>
 ```
