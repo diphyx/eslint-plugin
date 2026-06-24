@@ -20,13 +20,17 @@ function isSumReducer(node) {
         return false;
     }
 
-    const names = new Set([node.params[0].name, node.params[1].name]);
+    if (expression.left.type !== "Identifier" || expression.right.type !== "Identifier") {
+        return false;
+    }
+
+    // Require the two operands to be the two *distinct* params (accumulator and
+    // element). `acc + acc` ignores the element and is not a sum over the array.
+    const [accumulator, element] = [node.params[0].name, node.params[1].name];
 
     return (
-        expression.left.type === "Identifier" &&
-        expression.right.type === "Identifier" &&
-        names.has(expression.left.name) &&
-        names.has(expression.right.name)
+        (expression.left.name === accumulator && expression.right.name === element) ||
+        (expression.left.name === element && expression.right.name === accumulator)
     );
 }
 

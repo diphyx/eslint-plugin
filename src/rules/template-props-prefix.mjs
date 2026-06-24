@@ -1,6 +1,44 @@
 import { isVueFile } from "../utils/vue.mjs";
 
-function collectPropNames(node, names) {
+// A TSTypeLiteral keeps its members under `.members`; a TSInterfaceBody under
+// `.body`. Take the array directly so both shapes are handled.
+function collectSignatureNames(members, names) {
+    for (const member of members) {
+        if (member.type === "TSPropertySignature" && !member.computed && member.key.type === "Identifier") {
+            names.add(member.key.name);
+        }
+    }
+}
+
+// Map each top-level `interface X {…}` / `type X = {…}` to its property names, so
+// `defineProps<X>()` (a named type reference) can be resolved — not just the
+// inline `defineProps<{…}>()` literal form.
+function collectTypeDeclarations(program) {
+    const declarations = new Map();
+
+    for (const statement of program.body) {
+        const node =
+            statement.type === "ExportNamedDeclaration" && statement.declaration ? statement.declaration : statement;
+
+        if (node.type === "TSInterfaceDeclaration" && node.id.type === "Identifier") {
+            const names = new Set();
+            collectSignatureNames(node.body.body, names);
+            declarations.set(node.id.name, names);
+        } else if (
+            node.type === "TSTypeAliasDeclaration" &&
+            node.id.type === "Identifier" &&
+            node.typeAnnotation.type === "TSTypeLiteral"
+        ) {
+            const names = new Set();
+            collectSignatureNames(node.typeAnnotation.members, names);
+            declarations.set(node.id.name, names);
+        }
+    }
+
+    return declarations;
+}
+
+function collectPropNames(node, names, typeDeclarations) {
     const objectArgument = node.arguments.find((argument) => argument.type === "ObjectExpression");
     if (objectArgument) {
         for (const property of objectArgument.properties) {
@@ -28,11 +66,18 @@ function collectPropNames(node, names) {
     }
 
     const typeArguments = node.typeArguments || node.typeParameters;
-    const typeLiteral = typeArguments?.params?.[0];
-    if (typeLiteral && typeLiteral.type === "TSTypeLiteral") {
-        for (const member of typeLiteral.members) {
-            if (member.type === "TSPropertySignature" && !member.computed && member.key.type === "Identifier") {
-                names.add(member.key.name);
+    const typeArgument = typeArguments?.params?.[0];
+    if (!typeArgument) {
+        return;
+    }
+
+    if (typeArgument.type === "TSTypeLiteral") {
+        collectSignatureNames(typeArgument.members, names);
+    } else if (typeArgument.type === "TSTypeReference" && typeArgument.typeName.type === "Identifier") {
+        const resolved = typeDeclarations.get(typeArgument.typeName.name);
+        if (resolved) {
+            for (const name of resolved) {
+                names.add(name);
             }
         }
     }
@@ -60,6 +105,7 @@ export default {
         }
 
         const propNames = new Set();
+        const typeDeclarations = collectTypeDeclarations(context.sourceCode.ast);
 
         return services.defineTemplateBodyVisitor(
             {
@@ -84,7 +130,7 @@ export default {
             {
                 CallExpression(node) {
                     if (node.callee.type === "Identifier" && node.callee.name === "defineProps") {
-                        collectPropNames(node, propNames);
+                        collectPropNames(node, propNames, typeDeclarations);
                     }
                 },
             },

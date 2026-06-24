@@ -25,7 +25,9 @@ export default {
                 }
 
                 for (const property of getKeyedProperties(config)) {
-                    if (!FUNCTION_SECTIONS.has(property.key.name)) {
+                    // Skip getter/setter sections — a getter cannot be expressed
+                    // as method shorthand, so the suggestion would be impossible.
+                    if (!FUNCTION_SECTIONS.has(property.key.name) || property.kind !== "init") {
                         continue;
                     }
 

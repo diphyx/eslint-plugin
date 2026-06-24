@@ -53,7 +53,13 @@ export default {
 
                     for (const returned of getReturnedObjects(value)) {
                         for (const member of returned.properties) {
-                            if (member.type !== "Property" || member.computed || member.shorthand) {
+                            // A getter/setter cannot become a shorthand const property.
+                            if (
+                                member.type !== "Property" ||
+                                member.computed ||
+                                member.shorthand ||
+                                member.kind !== "init"
+                            ) {
                                 continue;
                             }
 
