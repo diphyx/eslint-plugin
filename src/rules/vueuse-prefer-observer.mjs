@@ -1,10 +1,10 @@
 import { isInEffectScope } from "../utils/vue.mjs";
 
-const CONSTRUCTORS = {
+const CONSTRUCTORS = Object.assign(Object.create(null), {
     ResizeObserver: "useResizeObserver",
     IntersectionObserver: "useIntersectionObserver",
     MutationObserver: "useMutationObserver",
-};
+});
 
 export default {
     meta: {
