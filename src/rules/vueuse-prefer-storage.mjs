@@ -1,9 +1,13 @@
 import { isInEffectScope } from "../utils/vue.mjs";
 
-const MEMBER_ACCESS = {
+const MEMBER_ACCESS = Object.assign(Object.create(null), {
     localStorage: "useLocalStorage",
     sessionStorage: "useSessionStorage",
-};
+});
+
+// Web Storage is only reached as a bare global or off the global object; a
+// `localStorage`/`sessionStorage` property on any other object is unrelated.
+const GLOBAL_HOSTS = new Set(["window", "globalThis", "self", "top", "parent", "frames"]);
 
 export default {
     meta: {
@@ -32,7 +36,13 @@ export default {
                     return;
                 }
 
-                if (!node.computed && node.property.type === "Identifier" && MEMBER_ACCESS[node.property.name]) {
+                if (
+                    !node.computed &&
+                    node.property.type === "Identifier" &&
+                    MEMBER_ACCESS[node.property.name] &&
+                    node.object.type === "Identifier" &&
+                    GLOBAL_HOSTS.has(node.object.name)
+                ) {
                     context.report({
                         node: node.property,
                         messageId: "preferStorage",

@@ -1,11 +1,11 @@
 import { isVueFile } from "../utils/vue.mjs";
 
-const MACRO_NAMES = {
+const MACRO_NAMES = Object.assign(Object.create(null), {
     defineProps: "props",
     defineModel: "model",
     defineEmits: "emit",
     defineSlots: "slots",
-};
+});
 
 function expectedName(node) {
     if (node.callee.name === "defineModel") {

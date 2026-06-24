@@ -1,9 +1,9 @@
 import { isInEffectScope } from "../utils/vue.mjs";
 
-const MEMBER_CALLS = {
+const MEMBER_CALLS = Object.assign(Object.create(null), {
     addEventListener: "useEventListener",
     matchMedia: "useMediaQuery",
-};
+});
 
 export default {
     meta: {

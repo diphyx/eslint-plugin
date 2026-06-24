@@ -1,6 +1,6 @@
 {
     "name": "@diphyx/eslint-plugin",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "description": "Shared ESLint plugin and flat config for DiPhyx Nuxt/Vue + Harlemify projects",
     "license": "MIT",
     "type": "module",

@@ -7,7 +7,10 @@
 #
 #   1. valid   — the repo + app/**/valid/** must produce ZERO problems.
 #   2. invalid — every rule the preset configures must fire at least once on
-#                app/**/invalid/**, and no fixture may have a parse error.
+#                app/**/invalid/**, no fixture may have a parse error, and every
+#                invalid fixture must produce at least one problem (so a fixture
+#                that silently stops firing — e.g. an over-eager suppression —
+#                cannot hide behind another fixture that covers the same rule).
 #
 # Run with `pnpm test` (or `sh test.sh`). Exits non-zero on any failure.
 
@@ -32,6 +35,29 @@ if printf '%s' "$report" | grep -q '"fatal":true'; then
     echo "✗ invalid fixtures have parse errors:"
     printf '%s' "$report" | grep -oE '"message":"[^"]+"' | sed 's/"message":"/    /; s/"$//'
     status=1
+fi
+
+# Every invalid fixture must warn — a fixture that goes silent (e.g. an
+# over-eager rule suppression) would otherwise be masked by sibling fixtures
+# that cover the same rule, so the "all rules fired" check alone can't catch it.
+silent=$(printf '%s' "$report" | node -e '
+    let input = "";
+    process.stdin.on("data", (chunk) => (input += chunk));
+    process.stdin.on("end", () => {
+        const files = JSON.parse(input);
+        const quiet = files.filter((file) => file.messages.length === 0);
+        for (const file of quiet) {
+            console.log(file.filePath.replace(process.cwd() + "/", ""));
+        }
+    });
+')
+
+if [ -n "$silent" ]; then
+    echo "✗ invalid fixture(s) that produced no problems:"
+    printf '%s\n' "$silent" | sed 's/^/    /'
+    status=1
+else
+    echo "✓ invalid: every fixture produced at least one problem"
 fi
 
 # Expected rules: the plugin's own rules (authoritative) + the third-party

@@ -1,10 +1,10 @@
 import { isInEffectScope } from "../utils/vue.mjs";
 
-const ROUTE_PROPERTIES = {
+const ROUTE_PROPERTIES = Object.assign(Object.create(null), {
     query: "useRouteQuery",
     params: "useRouteParams",
     hash: "useRouteHash",
-};
+});
 
 function isUseRouteCall(node) {
     return node.type === "CallExpression" && node.callee.type === "Identifier" && node.callee.name === "useRoute";

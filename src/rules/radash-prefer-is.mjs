@@ -1,10 +1,10 @@
-const TYPEOF_HELPERS = {
+const TYPEOF_HELPERS = Object.assign(Object.create(null), {
     number: "isNumber",
     string: "isString",
     boolean: "isBoolean",
     function: "isFunction",
     symbol: "isSymbol",
-};
+});
 
 function getTypeofComparison(node) {
     if (node.operator !== "===" && node.operator !== "!==") {

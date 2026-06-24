@@ -1,8 +1,8 @@
 import { isInEffectScope } from "../utils/vue.mjs";
 
-const GLOBAL_CALLS = {
+const GLOBAL_CALLS = Object.assign(Object.create(null), {
     setInterval: "useIntervalFn",
-};
+});
 
 export default {
     meta: {
