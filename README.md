@@ -118,7 +118,7 @@ Prefer [radash](https://radash-docs.vercel.app) helpers over hand-rolled equival
 
 Prefer [VueUse](https://vueuse.org) composables (with automatic lifecycle cleanup) over raw browser APIs.
 
-These rules only report inside a Vue effect scope — a `.vue` `<script setup>`, a component `setup()`, or a `use*` composable — because that is where VueUse's `onScopeDispose` cleanup actually runs. Plain TypeScript modules, utility functions, and non-component classes are left alone.
+These rules only report inside a Vue effect scope — a `.vue` `<script setup>`, a component `setup()`, or a `use*` composable — because that is where VueUse's `onScopeDispose` cleanup actually runs. Plain TypeScript modules, utility functions, and non-component classes are left alone. Code inside a detached callback (an event handler such as `el.onopen = …`, a `setTimeout`/`setInterval`/`addEventListener` callback, or a `.then`/`.catch`/`.finally` continuation) runs after the scope has closed, so it is left alone too.
 
 | Rule                        | Enforces                                                                                             |
 | --------------------------- | ---------------------------------------------------------------------------------------------------- |

@@ -4,6 +4,67 @@ export function isVueFile(context) {
 
 const EFFECT_SCOPE_PATTERN = /^use[A-Z]/;
 
+// Calls whose callback runs later, detached from the synchronous scope.
+const SCHEDULING_CALLS = new Set([
+    "setTimeout",
+    "setInterval",
+    "requestAnimationFrame",
+    "queueMicrotask",
+    "setImmediate",
+]);
+const DEFERRED_METHODS = new Set(["addEventListener", "then", "catch", "finally"]);
+const EVENT_HANDLER_PROPERTY = /^on[a-z]/;
+
+function isFunctionNode(node) {
+    return (
+        node.type === "FunctionDeclaration" ||
+        node.type === "FunctionExpression" ||
+        node.type === "ArrowFunctionExpression"
+    );
+}
+
+// A function that only runs after the synchronous composable/setup body has
+// finished: an assigned event handler (`socket.onopen = () => …`), a callback to
+// a scheduler/listener (`setInterval`/`addEventListener`/…), or a promise
+// continuation (`.then`/`.catch`/`.finally`). No effect scope is active there, so
+// VueUse's scope-bound cleanup can't register.
+function isDetachedCallback(fn) {
+    const parent = fn.parent;
+    if (!parent) {
+        return false;
+    }
+
+    if (
+        parent.type === "AssignmentExpression" &&
+        parent.right === fn &&
+        parent.left.type === "MemberExpression" &&
+        !parent.left.computed &&
+        parent.left.property.type === "Identifier" &&
+        EVENT_HANDLER_PROPERTY.test(parent.left.property.name)
+    ) {
+        return true;
+    }
+
+    if (parent.type === "CallExpression" && parent.arguments.includes(fn)) {
+        const callee = parent.callee;
+
+        if (callee.type === "Identifier" && SCHEDULING_CALLS.has(callee.name)) {
+            return true;
+        }
+
+        if (
+            callee.type === "MemberExpression" &&
+            !callee.computed &&
+            callee.property.type === "Identifier" &&
+            DEFERRED_METHODS.has(callee.property.name)
+        ) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function functionName(fn) {
     if (fn.id && fn.id.name) {
         return fn.id.name;
@@ -31,24 +92,29 @@ function functionName(fn) {
 }
 
 export function isInEffectScope(context, node) {
-    if (isVueFile(context)) {
-        return true;
-    }
+    const vue = isVueFile(context);
 
     for (let current = node.parent; current; current = current.parent) {
-        if (
-            current.type === "FunctionDeclaration" ||
-            current.type === "FunctionExpression" ||
-            current.type === "ArrowFunctionExpression"
-        ) {
-            const name = functionName(current);
-            if (name && (name === "setup" || EFFECT_SCOPE_PATTERN.test(name))) {
-                return true;
-            }
+        if (!isFunctionNode(current)) {
+            continue;
+        }
+
+        // Crossing a detached callback means the node runs after the scope has
+        // closed, so it is not in effect scope regardless of any enclosing
+        // composable/setup.
+        if (isDetachedCallback(current)) {
+            return false;
+        }
+
+        const name = functionName(current);
+        if (name && (name === "setup" || EFFECT_SCOPE_PATTERN.test(name))) {
+            return true;
         }
     }
 
-    return false;
+    // A `.vue` `<script setup>` is itself the setup scope, so a node that reached
+    // the top without crossing a boundary is in scope; a plain module is not.
+    return vue;
 }
 
 export function defineTemplateRule(meta, createVisitor) {
