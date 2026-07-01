@@ -1,16 +1,16 @@
 # @diphyx/eslint-plugin
 
-Opinionated ESLint rules and a ready-to-use flat config that capture DiPhyx's Nuxt/Vue + [Harlemify](https://github.com/diphyx/harlemify) conventions — so every DiPhyx app lints the same way from a single dependency.
+Opinionated ESLint rules and a ready-to-use flat config for DiPhyx's Nuxt/Vue + [Harlemify](https://github.com/diphyx/harlemify) code. Add one dependency and every DiPhyx app lints the same way.
 
-A stock `eslint-plugin-vue` setup checks general Vue style; this plugin adds the project-specific patterns it can't know about — where template directives belong, how `<script setup>` is ordered and written, the exact shape of a Harlemify `createStore`, composable naming, and reaching for [radash](https://radash-docs.vercel.app) / [VueUse](https://vueuse.org) instead of hand-rolled code.
+`eslint-plugin-vue` checks general Vue style. This plugin adds the DiPhyx-specific patterns it can't know about: where template directives go, how `<script setup>` is ordered and written, the shape of a Harlemify `createStore`, how composables are named, and when to use [radash](https://radash-docs.vercel.app) / [VueUse](https://vueuse.org) instead of writing the code by hand.
 
 ## Highlights
 
-- **35 custom rules** covering SFC templates, `<script setup>` structure, Harlemify stores, composable naming, code layout, and radash / VueUse usage.
-- **One-line preset** — `configs.recommended` wires up the TypeScript + Vue parsers, the relevant `eslint-plugin-vue` rules, file-naming, and every custom rule.
-- **No extra peer deps** — the parsers and plugins ship inside this package; you only install `eslint` itself.
-- **Guidance, not gates** — every rule reports as a warning and none auto-fix, so it nudges without blocking commits.
-- **Modern toolchain** — flat config, ESLint 9+, ESM only.
+- **35 custom rules** for SFC templates, `<script setup>` structure, Harlemify stores, composable naming, code layout, and radash / VueUse usage.
+- **One-line preset** — `configs.recommended` sets up the TypeScript + Vue parsers, the needed `eslint-plugin-vue` rules, file naming, and every custom rule.
+- **No extra dependencies** — the parsers and plugins come inside this package; you only install `eslint` itself.
+- **Guidance, not gates** — every rule is a warning and none auto-fix, so it guides you without blocking commits.
+- **Modern setup** — flat config, ESLint 9+, ESM only.
 
 ## Install
 
@@ -18,7 +18,7 @@ A stock `eslint-plugin-vue` setup checks general Vue style; this plugin adds the
 pnpm add -D @diphyx/eslint-plugin eslint
 ```
 
-The plugin ships its own parser/plugin dependencies (`@typescript-eslint/*`, `vue-eslint-parser`, `eslint-plugin-vue`, `eslint-plugin-check-file`), so you only need `eslint` itself as a peer.
+This package includes its own parser and plugin dependencies (`@typescript-eslint/*`, `vue-eslint-parser`, `eslint-plugin-vue`, `eslint-plugin-check-file`), so `eslint` is the only thing you install yourself.
 
 ## Usage
 
@@ -37,9 +37,9 @@ export default [
 ];
 ```
 
-### Picking rules à la carte
+### Enabling rules individually
 
-If you don't want the preset, register the plugin and turn on rules yourself:
+If you don't want the preset, add the plugin and turn on rules yourself:
 
 ```js
 import diphyx from "@diphyx/eslint-plugin";
@@ -58,7 +58,7 @@ export default [
 
 ## Rules
 
-All rules are report-only (warnings); none auto-fix. Each rule has its own page
+All rules only report warnings; none auto-fix. Each rule has its own page
 under [`docs/rules/`](./docs/rules) (also linked from the rule's `meta.docs.url`).
 
 ### Template (`*.vue`)
@@ -103,7 +103,7 @@ under [`docs/rules/`](./docs/rules) (also linked from the rule's `meta.docs.url`
 
 ### Radash preferences (`*.ts`, `*.vue`)
 
-Prefer [radash](https://radash-docs.vercel.app) helpers over hand-rolled equivalents.
+Prefer [radash](https://radash-docs.vercel.app) helpers instead of writing the same thing by hand.
 
 | Rule                   | Enforces                                                                        |
 | ---------------------- | ------------------------------------------------------------------------------- |
@@ -116,9 +116,9 @@ Prefer [radash](https://radash-docs.vercel.app) helpers over hand-rolled equival
 
 ### VueUse preferences (`*.ts`, `*.vue`)
 
-Prefer [VueUse](https://vueuse.org) composables (with automatic lifecycle cleanup) over raw browser APIs.
+Prefer [VueUse](https://vueuse.org) composables (which clean up automatically) over raw browser APIs.
 
-These rules only report inside a Vue effect scope — a `.vue` `<script setup>`, a component `setup()`, or a `use*` composable — because that is where VueUse's `onScopeDispose` cleanup actually runs. Plain TypeScript modules, utility functions, and non-component classes are left alone. Code inside a detached callback (an event handler such as `el.onopen = …`, a `setTimeout`/`setInterval`/`addEventListener` callback, or a `.then`/`.catch`/`.finally` continuation) runs after the scope has closed, so it is left alone too.
+These rules only report inside a Vue effect scope — a `.vue` `<script setup>`, a component `setup()`, or a `use*` composable — because that is where VueUse's `onScopeDispose` cleanup runs. Plain TypeScript modules, utility functions, and non-component classes are left alone. Code inside a detached callback (an event handler like `el.onopen = …`, a `setTimeout`/`setInterval`/`addEventListener` callback, or a `.then`/`.catch`/`.finally` continuation) runs after the scope has closed, so it is left alone too.
 
 | Rule                        | Enforces                                                                                             |
 | --------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -131,7 +131,7 @@ These rules only report inside a Vue effect scope — a `.vue` `<script setup>`,
 
 ### Layout (`*.ts`, `*.vue`)
 
-Keep multi-line statements visually separated in script/TypeScript code.
+Keep multi-line statements apart in script/TypeScript code.
 
 | Rule                      | Enforces                                                   |
 | ------------------------- | ---------------------------------------------------------- |
